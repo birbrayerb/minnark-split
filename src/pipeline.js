@@ -117,6 +117,10 @@ export function readDomesticPayments(workbook) {
   if (!sheetName) throw new Error('No Payment Details sheet found');
 
   const ws = workbook.Sheets[sheetName];
+  // Limit read to columns A-AH (0-33) to avoid processing 16K+ empty columns
+  const range = XLSX.utils.decode_range(ws['!ref'] || 'A1');
+  range.e.c = Math.min(range.e.c, 33); // cap at column AH
+  ws['!ref'] = XLSX.utils.encode_range(range);
   const data = XLSX.utils.sheet_to_json(ws, { header: 1, defval: null, raw: true });
   if (data.length < 2) throw new Error('Domestic Payments sheet is empty');
 
