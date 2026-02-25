@@ -124,8 +124,12 @@ export function readDomesticPayments(workbook) {
   const data = XLSX.utils.sheet_to_json(ws, { header: 1, defval: null, raw: true });
   if (data.length < 2) throw new Error('Domestic Payments sheet is empty');
 
+  console.log('[DO] Sheet:', sheetName, '| Rows:', data.length, '| Row1 cols:', data[1]?.length);
+  console.log('[DO] Row1 sample — col2:', data[1]?.[2], '| col27:', data[1]?.[27], '| col32:', data[1]?.[32]);
+
   const rows = [];
   let lastDate = null;
+  let debugNoDate = 0, debugNoTeam = 0, debugNoPaid = 0;
 
   for (let i = 1; i < data.length; i++) {
     const rv = data[i];
@@ -146,17 +150,29 @@ export function readDomesticPayments(workbook) {
     // Paid Per Item = col AG (index 32)
     const paid = rv[32];
 
-    if (team && paid != null && lastDate) {
-      const amount = Number(paid);
-      if (!isNaN(amount)) {
-        rows.push({
-          date: lastDate,
-          team,
-          program: program || 'UNKNOWN',
-          amount,
-        });
-      }
+    if (!lastDate) { debugNoDate++; continue; }
+    if (!team) { debugNoTeam++; continue; }
+    if (paid == null) { debugNoPaid++; continue; }
+
+    const amount = Number(paid);
+    if (!isNaN(amount)) {
+      rows.push({
+        date: lastDate,
+        team,
+        program: program || 'UNKNOWN',
+        amount,
+      });
     }
+  }
+
+  console.log('[DO] Result:', rows.length, 'valid rows | noDate:', debugNoDate, '| noTeam:', debugNoTeam, '| noPaid:', debugNoPaid);
+  if (rows.length > 0) {
+    const byMonth = {};
+    for (const r of rows) {
+      const ym = r.date.getFullYear() * 100 + (r.date.getMonth() + 1);
+      byMonth[ym] = (byMonth[ym] || 0) + 1;
+    }
+    console.log('[DO] By month:', byMonth);
   }
 
   return rows;
