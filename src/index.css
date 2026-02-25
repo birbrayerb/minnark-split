@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+:root {
+  --navy: #0f172a;
+  --navy-light: #1e293b;
+  --navy-mid: #334155;
+  --blackfin-blue: #3b82f6;
+  --blackfin-light: #60a5fa;
+  --mizar-teal: #14b8a6;
+  --mizar-light: #2dd4bf;
+  --accent-gold: #f59e0b;
+  --surface: #1e293b;
+  --surface-hover: #273548;
+}
+
+body {
+  margin: 0;
+  background: var(--navy);
+  color: #e2e8f0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--navy); }
+::-webkit-scrollbar-thumb { background: var(--navy-mid); border-radius: 3px; }
+
+/* Glass card */
+.glass-card {
+  background: rgba(30, 41, 59, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(71, 85, 105, 0.3);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.glass-card-sm {
+  background: rgba(30, 41, 59, 0.5);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(71, 85, 105, 0.2);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+/* Upload zone */
+.upload-zone {
+  border: 2px dashed rgba(71, 85, 105, 0.5);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.upload-zone:hover, .upload-zone.drag-over {
+  border-color: var(--blackfin-blue);
+  background: rgba(59, 130, 246, 0.05);
+}
+
+/* Table */
+.data-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+.data-table th {
+  text-align: left; padding: 10px 16px; font-size: 0.75rem;
+  text-transform: uppercase; letter-spacing: 0.05em;
+  color: #94a3b8; border-bottom: 1px solid rgba(71,85,105,0.3);
+  cursor: pointer; user-select: none;
+}
+.data-table th:hover { color: #cbd5e1; }
+.data-table td {
+  padding: 10px 16px; font-size: 0.875rem;
+  border-bottom: 1px solid rgba(71,85,105,0.15);
+}
+.data-table tr:hover td { background: rgba(59,130,246,0.03); }
+
+/* Animations */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.fade-in { animation: fadeIn 0.4s ease-out; }
+
+@keyframes pulse-soft { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+.pulse-soft { animation: pulse-soft 1.5s ease-in-out infinite; }
