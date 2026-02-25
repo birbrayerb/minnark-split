@@ -176,7 +176,17 @@ function App() {
         >
           <Upload className="w-10 h-10 mx-auto mb-3 text-slate-400" />
           <p className="text-slate-300 font-medium">Drop Excel files here or click to upload</p>
-          <p className="text-xs text-slate-500 mt-1">JPM monthly files • Domestic Payments file</p>
+          <p className="text-xs text-slate-500 mt-2">Upload JPM monthly files + Domestic Payments file</p>
+          <div className="mt-3 inline-block text-left bg-slate-800/60 rounded-lg px-4 py-3 border border-slate-700/50">
+            <p className="text-[11px] text-slate-400 font-semibold uppercase tracking-wider mb-1.5">Expected files</p>
+            <div className="space-y-1 text-xs text-slate-500">
+              <p><span className="text-blue-400 font-mono">📊</span> <span className="text-slate-400">JPM_TXN_2025_Oct-Nov.xlsx</span></p>
+              <p><span className="text-blue-400 font-mono">📊</span> <span className="text-slate-400">JPM_TXN_2025_Nov-Dec.xlsx</span></p>
+              <p><span className="text-blue-400 font-mono">📊</span> <span className="text-slate-400">JPM_TXN_2025_Dec.xlsx</span></p>
+              <p><span className="text-amber-400 font-mono">📋</span> <span className="text-slate-400">Domestic_Payments.xlsx</span></p>
+            </div>
+            <p className="text-[10px] text-slate-600 mt-2 italic">Drop any combination — only matching months will be processed</p>
+          </div>
           <input id="file-input" type="file" multiple accept=".xlsx,.xls" className="hidden"
             onChange={(e) => { handleFiles(e.target.files); e.target.value = ''; }} />
         </div>
