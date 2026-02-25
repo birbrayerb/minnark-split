@@ -111,7 +111,9 @@ export function readTotalDI(workbook, filename) {
  */
 export function readDomesticPayments(workbook) {
   // Find the payment details sheet
-  const sheetName = workbook.SheetNames.find(n => n.includes('Payment Details'));
+  // Prefer 2025 sheet over 2024
+  const sheetName = workbook.SheetNames.find(n => n.includes('2025_Payment Details'))
+    || workbook.SheetNames.find(n => n.includes('Payment Details'));
   if (!sheetName) throw new Error('No Payment Details sheet found');
 
   const ws = workbook.Sheets[sheetName];
