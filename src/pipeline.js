@@ -398,6 +398,17 @@ export function readFile(file) {
     reader.onload = (e) => {
       try {
         const workbook = XLSX.read(e.target.result, { type: 'array', cellDates: true });
+        // Cap oversized sheets (e.g. Domestic_Payments has 16K+ empty columns)
+        for (const name of workbook.SheetNames) {
+          const ws = workbook.Sheets[name];
+          if (ws['!ref']) {
+            const range = XLSX.utils.decode_range(ws['!ref']);
+            if (range.e.c > 50) {
+              range.e.c = 50; // no sheet needs more than ~34 columns
+              ws['!ref'] = XLSX.utils.encode_range(range);
+            }
+          }
+        }
         resolve(workbook);
       } catch (err) {
         reject(new Error(`Failed to parse ${file.name}: ${err.message}`));
